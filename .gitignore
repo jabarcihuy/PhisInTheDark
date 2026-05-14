@@ -1,0 +1,17 @@
+# Java build outputs
+build/
+dist/
+out/
+out-lint/
+target/
+*.class
+
+# NetBeans local machine settings
+nbproject/private/
+
+# Local agent/editor metadata
+.agents/
+.codex/
+
+# OS files
+.DS_Store
