@@ -13,6 +13,7 @@ import javax.sound.sampled.LineEvent;
 
 public class AudioManager {
     private boolean muted;
+    private boolean ambienceMuted;
     private Clip ambienceClip;
 
     public void playTyping() {
@@ -48,7 +49,7 @@ public class AudioManager {
     }
 
     public void loopAmbience() {
-        if (muted || ambienceClip != null) {
+        if (muted || ambienceMuted || ambienceClip != null) {
             return;
         }
         ambienceClip = openClip("ambience_loop.wav");
@@ -116,6 +117,17 @@ public class AudioManager {
     public void setMuted(boolean muted) {
         this.muted = muted;
         if (muted) {
+            stopAmbience();
+        }
+    }
+
+    public boolean isAmbienceMuted() {
+        return ambienceMuted;
+    }
+
+    public void setAmbienceMuted(boolean ambienceMuted) {
+        this.ambienceMuted = ambienceMuted;
+        if (ambienceMuted) {
             stopAmbience();
         }
     }

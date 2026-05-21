@@ -11,6 +11,7 @@ public class LoopPuzzle extends Puzzle {
                 "signal = 1\n\nfor step in range(3):\n    signal = signal * 2\n\nprint(signal)",
                 "Ketik angka saja: berapa nilai signal yang dicetak setelah loop selesai?",
                 "8",
+                "8",
                 "Halaman terenkripsi retak. Perintah akhir muncul di terminal: exit_trace.",
                 "trace_key",
                 List.of(

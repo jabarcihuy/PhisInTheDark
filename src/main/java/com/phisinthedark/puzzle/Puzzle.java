@@ -2,6 +2,7 @@ package com.phisinthedark.puzzle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -11,6 +12,7 @@ public abstract class Puzzle implements Solvable {
     private final String concept;
     private final String codeBlock;
     private final String instruction;
+    private final String answer;
     private final String tutorialAnswer;
     private final String solvedMessage;
     private final String rewardItem;
@@ -22,6 +24,7 @@ public abstract class Puzzle implements Solvable {
                      String concept,
                      String codeBlock,
                      String instruction,
+                     String answer,
                      String tutorialAnswer,
                      String solvedMessage,
                      String rewardItem,
@@ -31,6 +34,7 @@ public abstract class Puzzle implements Solvable {
         this.concept = concept;
         this.codeBlock = codeBlock;
         this.instruction = instruction;
+        this.answer = answer;
         this.tutorialAnswer = tutorialAnswer;
         this.solvedMessage = solvedMessage;
         this.rewardItem = rewardItem;
@@ -104,6 +108,10 @@ public abstract class Puzzle implements Solvable {
         return instruction;
     }
 
+    public String getAnswer() {
+        return answer;
+    }
+
     public String getTutorialAnswer() {
         return tutorialAnswer;
     }
@@ -114,5 +122,9 @@ public abstract class Puzzle implements Solvable {
 
     public String getRewardItem() {
         return rewardItem;
+    }
+
+    public List<String> getHints() {
+        return Collections.unmodifiableList(hints);
     }
 }

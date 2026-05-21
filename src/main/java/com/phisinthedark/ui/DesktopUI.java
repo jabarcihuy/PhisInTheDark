@@ -243,7 +243,7 @@ public class DesktopUI extends JFrame {
     }
 
     public void openSettings() {
-        BaseWindow settings = new BaseWindow("Settings", 500, game.isTutorialMode() ? 260 : 330) {
+        BaseWindow settings = new BaseWindow("Settings", 500, game.isTutorialMode() ? 300 : 380) {
         };
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBackground(UiTheme.PANEL);
@@ -253,7 +253,7 @@ public class DesktopUI extends JFrame {
         title.setForeground(UiTheme.BLUE);
         title.setFont(UiTheme.font(20f, Font.BOLD));
 
-        JPanel actions = new JPanel(new GridLayout(game.isTutorialMode() ? 2 : 3, 1, 8, 8));
+        JPanel actions = new JPanel(new GridLayout(game.isTutorialMode() ? 3 : 4, 1, 8, 8));
         actions.setOpaque(false);
 
         JButton mute = taskButton(game.getAudioManager().isMuted() ? "Unmute Audio" : "Mute Audio", "icon_terminal.png", event -> {
@@ -263,6 +263,17 @@ public class DesktopUI extends JFrame {
             settings.dispose();
         });
         actions.add(mute);
+
+        JButton ambienceToggle = taskButton(game.getAudioManager().isAmbienceMuted() ? "Unmute Ambience" : "Mute Ambience", "icon_terminal.png", event -> {
+            boolean ambienceMuted = !game.getAudioManager().isAmbienceMuted();
+            game.getAudioManager().setAmbienceMuted(ambienceMuted);
+            if (!ambienceMuted && !game.getAudioManager().isMuted() && !game.isTutorialMode()) {
+                game.getAudioManager().loopAmbience();
+            }
+            showNotification("AMBIENCE", ambienceMuted ? "Muted." : "Unmuted.");
+            settings.dispose();
+        });
+        actions.add(ambienceToggle);
 
         if (!game.isTutorialMode()) {
             JButton reset = taskButton("Reset Normal Save", "icon_load.png", event -> {

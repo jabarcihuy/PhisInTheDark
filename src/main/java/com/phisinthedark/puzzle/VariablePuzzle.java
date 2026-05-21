@@ -11,6 +11,7 @@ public class VariablePuzzle extends Puzzle {
                 "password = \"ghost\"\n\nif password == \"_____\":\n    print(\"ACCESS GRANTED\")",
                 "Ketik nilai string yang tepat untuk mengisi bagian kosong. Jawaban harus satu kata.",
                 "ghost",
+                "ghost",
                 "Forum membuka thread lama: USER_13 meninggalkan key pertama.",
                 "forum_key",
                 List.of(

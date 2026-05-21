@@ -30,6 +30,7 @@ public class Website {
     private final Puzzle puzzle;
     private final String unlockedFileTitle;
     private final String unlockedFileContent;
+    private final int sortOrder;
 
     public Website(String id,
                    String title,
@@ -40,7 +41,8 @@ public class Website {
                    List<String> bodyLines,
                    Puzzle puzzle,
                    String unlockedFileTitle,
-                   String unlockedFileContent) {
+                   String unlockedFileContent,
+                   int sortOrder) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -51,6 +53,7 @@ public class Website {
         this.puzzle = puzzle;
         this.unlockedFileTitle = unlockedFileTitle;
         this.unlockedFileContent = unlockedFileContent;
+        this.sortOrder = sortOrder;
     }
 
     @Override
@@ -96,5 +99,9 @@ public class Website {
 
     public String getUnlockedFileContent() {
         return unlockedFileContent;
+    }
+
+    public int getSortOrder() {
+        return sortOrder;
     }
 }

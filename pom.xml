@@ -15,6 +15,15 @@
         <maven.compiler.release>17</maven.compiler.release>
     </properties>
 
+    <dependencies>
+        <!-- MariaDB JDBC Driver -->
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>3.3.3</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -29,7 +38,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.nulltrace.core.Game</mainClass>
+                            <mainClass>com.phisinthedark.core.Game</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -39,7 +48,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
-                    <mainClass>com.nulltrace.core.Game</mainClass>
+                    <mainClass>com.phisinthedark.core.Game</mainClass>
                 </configuration>
             </plugin>
         </plugins>

@@ -11,6 +11,7 @@ public class ConditionalPuzzle extends Puzzle {
                 "signal = \"cold\"\n\nif signal == \"cold\":\n    connect hidden_server\nelse:\n    print(\"NO ROUTE\")",
                 "Ketik command persis yang dijalankan saat signal bernilai cold.",
                 "connect hidden_server",
+                "connect hidden_server",
                 "Hidden server merespons dengan satu alamat email yang tidak pernah dikirim.",
                 "server_route",
                 List.of(

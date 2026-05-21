@@ -14,6 +14,9 @@ import com.phisinthedark.ui.StartMenu;
 import com.phisinthedark.ui.UiTheme;
 import com.phisinthedark.website.Browser;
 import com.phisinthedark.website.Website;
+import com.phisinthedark.database.DatabaseManager;
+import com.phisinthedark.database.User;
+import com.phisinthedark.ui.LoginMenu;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,20 +39,19 @@ import java.util.List;
 import java.util.Set;
 
 public class Game {
-    private final Player player;
-    private final Browser browser;
+    private Player player;
+    private Browser browser;
     private final AudioManager audioManager;
-    private final SaveManager saveManager;
+    private SaveManager saveManager;
+    private final DatabaseManager dbManager;
     private GameMode mode;
     private DesktopUI desktopUI;
     private EventSystem eventSystem;
 
     public Game() {
         AssetGenerator.ensureAssets();
-        this.player = new Player("student");
-        this.browser = Browser.createDefaultBrowser();
         this.audioManager = new AudioManager();
-        this.saveManager = new SaveManager();
+        this.dbManager = new DatabaseManager();
         this.mode = GameMode.NORMAL;
     }
 
@@ -71,12 +73,23 @@ public class Game {
     public void start() {
         try {
             UiTheme.applyGlobalDefaults();
-            StartMenu menu = new StartMenu(this::startWithChoice, saveManager.describeSave());
-            menu.setVisible(true);
+            LoginMenu login = new LoginMenu(this::onLoginSuccess, dbManager);
+            login.setVisible(true);
         } catch (Throwable error) {
             System.err.println("Cannot start Phis in the Dark Swing UI: " + error.getMessage());
             System.err.println("Run with --smoke-test to validate non-UI game data.");
         }
+    }
+
+    private void onLoginSuccess(User user) {
+        this.player = new Player(user.displayName());
+        this.saveManager = new SaveManager(dbManager, user.id());
+        
+        dbManager.seedDataIfEmpty();
+        this.browser = dbManager.loadBrowser();
+
+        StartMenu menu = new StartMenu(this::startWithChoice, saveManager.describeSave());
+        menu.setVisible(true);
     }
 
     private void startWithChoice(StartMenu.StartChoice choice) {
@@ -88,7 +101,7 @@ public class Game {
             eventSystem = new EventSystem(desktopUI, player, audioManager);
             desktopUI.setEventSystem(eventSystem);
 
-            boolean loaded = choice.loadSave() && saveManager.load(player, mode);
+            boolean loaded = choice.loadSave() && saveManager.load(player, mode, audioManager);
             desktopUI.refreshAfterLoad();
             desktopUI.setVisible(true);
             if (loaded && player.isEndingReached()) {
@@ -175,7 +188,7 @@ public class Game {
         player.getInventory().addItem(puzzle.getRewardItem());
         audioManager.playNotification();
         if (!isTutorialMode()) {
-            saveManager.save(player, mode);
+            saveManager.save(player, mode, audioManager);
         }
 
         if (desktopUI != null) {
@@ -191,14 +204,14 @@ public class Game {
         if (isTutorialMode()) {
             return false;
         }
-        return saveManager.save(player, mode);
+        return saveManager.save(player, mode, audioManager);
     }
 
     public boolean loadGame() {
         if (isTutorialMode()) {
             return false;
         }
-        boolean loaded = saveManager.load(player, mode);
+        boolean loaded = saveManager.load(player, mode, audioManager);
         if (desktopUI != null) {
             desktopUI.refreshAfterLoad();
             if (loaded && player.isEndingReached()) {
@@ -275,7 +288,7 @@ public class Game {
         audioManager.stopAmbience();
         player.setEndingReached(true);
         if (!isTutorialMode()) {
-            saveManager.save(player, mode);
+            saveManager.save(player, mode, audioManager);
         }
         desktopUI.showEnding();
     }
@@ -327,6 +340,9 @@ public class Game {
     }
 
     public String runSmokeTest() {
+        dbManager.seedDataIfEmpty();
+        this.browser = dbManager.loadBrowser();
+        
         StringBuilder result = new StringBuilder("Phis in the Dark smoke test\n");
         List<String> errors = new ArrayList<>();
         Set<String> websiteIds = new HashSet<>();
@@ -334,7 +350,7 @@ public class Game {
         Set<String> puzzleIds = new HashSet<>();
 
         result.append("websites=").append(browser.getWebsites().size()).append('\n');
-        result.append("savePath=").append(saveManager.getSaveFile(GameMode.NORMAL)).append('\n');
+        result.append("savePath=MariaDB jdbc:mariadb://localhost:3306/phis_in_the_dark\n");
 
         validateImage("loading_screen.png", errors);
         validateImage("wallpaper_desktop.png", errors);

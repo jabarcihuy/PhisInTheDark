@@ -34,7 +34,8 @@ public class Browser {
                         ),
                         new VariablePuzzle(),
                         "thread_13.txt",
-                        "THREAD_13\nKey ditemukan: forum_key\nCatatan: password bukan ditebak. Password dibaca dari variable."
+                        "THREAD_13\nKey ditemukan: forum_key\nCatatan: password bukan ditebak. Password dibaca dari variable.",
+                        1
                 ),
                 new Website(
                         "moth_index",
@@ -50,7 +51,8 @@ public class Browser {
                         ),
                         new ConditionalPuzzle(),
                         "unsent_mail.eml",
-                        "FROM: unknown_user\nTO: you\nSUBJECT: route\n\nKalau signal terasa cold, route-nya bukan halaman. Route-nya perintah."
+                        "FROM: unknown_user\nTO: you\nSUBJECT: route\n\nKalau signal terasa cold, route-nya bukan halaman. Route-nya perintah.",
+                        2
                 ),
                 new Website(
                         "echo_market",
@@ -66,7 +68,8 @@ public class Browser {
                         ),
                         new LoopPuzzle(),
                         "exit_command.note",
-                        "EXIT COMMAND\nTerminal menerima perintah akhir setelah tiga key terkumpul:\nexit_trace"
+                        "EXIT COMMAND\nTerminal menerima perintah akhir setelah tiga key terkumpul:\nexit_trace",
+                        3
                 ),
                 new Website(
                         "cold_login",
@@ -82,7 +85,8 @@ public class Browser {
                         ),
                         null,
                         "login_cache.txt",
-                        "LOGIN CACHE\nHalaman ini hanya clue visual. Puzzle utama tetap ada di 3 website pertama."
+                        "LOGIN CACHE\nHalaman ini hanya clue visual. Puzzle utama tetap ada di 3 website pertama.",
+                        4
                 ),
                 new Website(
                         "room_013",
@@ -98,7 +102,8 @@ public class Browser {
                         ),
                         null,
                         "chat_log_013.txt",
-                        "ROOM 0X13\nTidak ada puzzle di sini. Hanya atmosfer dan clue."
+                        "ROOM 0X13\nTidak ada puzzle di sini. Hanya atmosfer dan clue.",
+                        5
                 ),
                 new Website(
                         "broken_mirror",
@@ -114,7 +119,8 @@ public class Browser {
                         ),
                         null,
                         "mirror_error.log",
-                        "MIRROR ERROR\nVisual glitch bukan kegagalan game. Itu bagian dari atmosfer."
+                        "MIRROR ERROR\nVisual glitch bukan kegagalan game. Itu bagian dari atmosfer.",
+                        6
                 ),
                 new Website(
                         "thirteen_notes",
@@ -130,7 +136,8 @@ public class Browser {
                         ),
                         null,
                         "blog_note.txt",
-                        "BLOG NOTE\nBelajar coding lebih ringan ketika setiap konsep menjadi aksi kecil."
+                        "BLOG NOTE\nBelajar coding lebih ringan ketika setiap konsep menjadi aksi kecil.",
+                        7
                 ),
                 new Website(
                         "archive_404",
@@ -146,7 +153,8 @@ public class Browser {
                         ),
                         null,
                         "archive_404.txt",
-                        "ARCHIVE 404\nFile ini palsu. Namun struktur log dapat dibaca seperti data."
+                        "ARCHIVE 404\nFile ini palsu. Namun struktur log dapat dibaca seperti data.",
+                        8
                 ),
                 new Website(
                         "wire_room",
@@ -162,7 +170,8 @@ public class Browser {
                         ),
                         null,
                         "wire_room.thread",
-                        "WIRE ROOM\nTeori paling berguna: selesaikan puzzle, baca reward file."
+                        "WIRE ROOM\nTeori paling berguna: selesaikan puzzle, baca reward file.",
+                        9
                 ),
                 new Website(
                         "null_search",
@@ -179,7 +188,8 @@ public class Browser {
                         ),
                         null,
                         "search_results.cache",
-                        "NULL SEARCH\nTiga result pertama adalah jalur utama menuju ending."
+                        "NULL SEARCH\nTiga result pertama adalah jalur utama menuju ending.",
+                        10
                 )
         );
         return new Browser(defaultSites);
