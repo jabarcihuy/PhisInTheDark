@@ -340,6 +340,7 @@ public class Game {
     }
 
     public String runSmokeTest() {
+        this.player = new com.phisinthedark.player.Player("smoke_test");
         dbManager.seedDataIfEmpty();
         this.browser = dbManager.loadBrowser();
         

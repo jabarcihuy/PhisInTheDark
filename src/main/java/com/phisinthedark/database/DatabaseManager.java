@@ -16,11 +16,39 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class DatabaseManager {
-    private static final String URL = "jdbc:mariadb://localhost:3306/phis_in_the_dark";
-    private static final String USER = "phis";
-    private static final String PASSWORD = "phis";
+    private static final String URL;
+    private static final String USER;
+    private static final String PASSWORD;
+
+    static {
+        Properties props = new Properties();
+        try (FileInputStream fis = new FileInputStream(".env")) {
+            props.load(fis);
+        } catch (IOException e) {
+            // Silently ignore if .env file is not found, will fallback
+        }
+
+        String envUrl = props.getProperty("DB_URL", System.getenv("DB_URL"));
+        String envUser = props.getProperty("DB_USER", System.getenv("DB_USER"));
+        String envPassword = props.getProperty("DB_PASSWORD", System.getenv("DB_PASSWORD"));
+
+        // Fallback to local config if environment variables are not set
+        URL = (envUrl != null && !envUrl.isEmpty()) ? envUrl : "jdbc:mariadb://localhost:3306/phis_in_the_dark";
+        USER = (envUser != null && !envUser.isEmpty()) ? envUser : "phis";
+        PASSWORD = (envPassword != null) ? envPassword : "phis";
+
+        // Explicitly load driver to prevent "No suitable driver found" error
+        try {
+            Class.forName("org.mariadb.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("MariaDB JDBC Driver not found in classpath.");
+        }
+    }
 
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
@@ -44,8 +72,9 @@ public class DatabaseManager {
             stmt.setString(2, hashPassword(password));
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    updateLastLogin(rs.getInt("id"));
-                    return new User(rs.getInt("id"), rs.getString("username"), rs.getString("display_name"));
+                    int userId = rs.getInt("id");
+                    updateLastLogin(conn, userId);
+                    return new User(userId, rs.getString("username"), rs.getString("display_name"));
                 }
             }
         } catch (SQLException e) {
@@ -80,10 +109,9 @@ public class DatabaseManager {
         return false;
     }
 
-    private void updateLastLogin(int userId) {
+    private void updateLastLogin(Connection conn, int userId) {
         String query = "UPDATE users SET last_login_at = CURRENT_TIMESTAMP WHERE id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
             stmt.executeUpdate();
         } catch (SQLException e) {
